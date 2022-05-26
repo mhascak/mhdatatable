@@ -1,0 +1,83 @@
+{
+  "author": {
+    "name": "Martin Haščák",
+    "email": "martinhascak@gmail.com"
+  },
+  "ava": {
+    "require": [
+      "./test/.setup.js"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/OneWayTech/vue2-datatable/issues"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "sortablejs": "^1.10.1",
+    "vue-resize-directive": "^1.1.4",
+    "vue-tippy": "^2.0.24",
+    "vuedraggable": "^2.23.2"
+  },
+  "description": "Customized fork - of the best Datatable for Vue.js 2.x which never sucks",
+  "devDependencies": {
+    "ava": "^0.22.0",
+    "avoriaz": "^4.1.0",
+    "babel-engine-plugin": "^0.2.1",
+    "babel-polyfill": "^6.23.0",
+    "browser-env": "^3.2.0",
+    "clean-webpack-plugin": "^0.1.16",
+    "docsify-cli": "^4.1.10",
+    "eslint": "4.6.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-vue": "^3.13.0",
+    "jquery": "^3.2.1",
+    "localstorage-polyfill": "^1.0.1",
+    "mockjs": "^1.0.1-beta3",
+    "moment": "^2.18.1",
+    "p-immediate": "^2.1.0",
+    "require-extension-hooks": "^0.3.0",
+    "require-extension-hooks-babel": "^0.1.1",
+    "require-extension-hooks-vue": "^0.4.0",
+    "vue-cli": "2.8.2"
+  },
+  "peerDependencies": {},
+  "files": [
+    "dist",
+    "locale",
+    "src",
+    "plugins"
+  ],
+  "homepage": "https://github.com/Klainer/vue2-datatable#readme",
+  "keywords": [
+    "vue",
+    "datatable",
+    "table"
+  ],
+  "license": "MIT",
+  "main": "dist/min.js",
+  "module": "src/main.js",
+  "name": "@fibit/datagrid",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Klainer/vue2-datatable.git"
+  },
+  "scripts": {
+    "build": "npm run build:examples && npm run build:lib",
+    "build:examples": "vue build --config build/examples.js --prod",
+    "build:lib": "vue build --config build/lib.js --prod",
+    "doc": "docsify serve doc",
+    "lint": "eslint -f node_modules/eslint-friendly-formatter build/** examples/src/** locale/** src/** test/**",
+    "lintFix": "eslint --fix build/** examples/src/** locale/** src/** test/**",
+    "prebuild": "npm run lint",
+    "pretest": "npm run lint",
+    "start": "vue build --config build/examples.js",
+    "test": "ava",
+    "refreshVSToken" : "vsts-npm-auth -config .npmrc"
+  },
+  "version": "3.5.1"
+}
