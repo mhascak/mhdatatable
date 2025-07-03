@@ -1,0 +1,769 @@
+/* Core Table Styles for MH DataTable
+   Modern, accessible, and responsive table implementation
+*/
+
+/* Import design tokens */
+@import './design-tokens.css';
+@import './menu-components.css';
+
+/* Reset and base styles */
+.mh-table,
+.mh-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-family: var(--mh-font-family);
+  font-size: var(--mh-font-size-sm);
+  line-height: var(--mh-line-height-normal);
+  color: var(--mh-text-primary);
+  background: var(--mh-bg-primary);
+  table-layout: fixed;
+  display: table;
+}
+
+/* Table Container - Configurable height */
+.mh-table-container {
+  position: relative;
+  width: 100%;
+  min-height: var(--mh-table-min-height);
+  max-height: var(--mh-table-max-height);
+  height: var(--mh-table-default-height);
+  display: flex;
+  flex-direction: column;
+  border: var(--mh-table-border-width) solid var(--mh-table-border-color);
+  border-radius: var(--mh-border-radius-base);
+  background: var(--mh-bg-primary);
+  box-shadow: var(--mh-shadow-sm);
+}
+
+/* Full height mode */
+.mh-table-container--full-height {
+  height: calc(var(--mh-table-full-height) - var(--mh-table-full-height-offset));
+  max-height: none;
+}
+
+/* Auto height mode */
+.mh-table-container--auto-height {
+  height: auto;
+  max-height: none;
+}
+
+/* Table Header */
+.mh-table-header th,
+.mh-table th {
+  background: var(--mh-table-header-bg);
+  font-weight: var(--mh-font-weight-semibold);
+  color: var(--mh-text-primary);
+  border-bottom: 1px solid var(--mh-table-header-border);
+  padding: 0 16px;
+  text-align: left;
+  vertical-align: middle;
+  position: sticky;
+  top: 0;
+  z-index: var(--mh-z-sticky);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color var(--mh-transition-fast);
+  box-shadow: none;
+  box-sizing: border-box;
+  line-height: 1.4;
+  font-size: 14px;
+  height: 60px; /* Match cell height */
+}
+
+.mh-table-header th:hover,
+.mh-table th:hover {
+  background: var(--mh-bg-hover);
+}
+
+/* Table Body */
+.mh-table-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  min-height: 0; /* Important for flex child */
+}
+
+.mh-table-body tbody {
+  display: table-row-group;
+}
+
+.mh-table-body table {
+  width: 100%;
+  min-width: 100%;
+}
+
+/* Specific styles for main table body in complex mode */
+.mh-table-section--body .mh-table-main .mh-table-body {
+  max-height: 100%;
+  overflow: auto;
+}
+
+.mh-table-section--body .mh-table-main .mh-table {
+  width: 100%;
+  min-width: 100%;
+  table-layout: fixed;
+}
+
+/* Table Rows */
+.mh-table-row,
+.mh-table tr {
+  border-bottom: 1px solid var(--mh-table-border-color);
+  transition: background-color var(--mh-transition-fast);
+  height: 60px; /* Fixed height to ensure alignment */
+}
+
+.mh-table-row:nth-child(even),
+.mh-table tr:nth-child(even) {
+  background: var(--mh-table-stripe-color);
+}
+
+.mh-table-row:hover,
+.mh-table tr:hover {
+  background: var(--mh-table-hover-color);
+}
+
+.mh-table-row--selected,
+.mh-table tr--selected {
+  background: var(--mh-table-selection-color);
+}
+
+.mh-table-row--selected:hover,
+.mh-table tr--selected:hover {
+  background: var(--mh-table-selection-color);
+}
+
+/* Table Cells */
+.mh-table-cell,
+.mh-table td {
+  padding: 0 16px; /* Remove vertical padding, let height control it */
+  vertical-align: middle;
+  border-bottom: none;
+  border-right: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background-color var(--mh-transition-fast);
+  box-sizing: border-box;
+  line-height: 1.4;
+  font-size: 14px;
+  height: 60px; /* Match row height exactly */
+}
+
+/* Allow text wrapping in cells when needed */
+.mh-table-cell--wrap,
+.mh-table td--wrap {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Table Footer */
+.mh-table-footer {
+  background: var(--mh-bg-secondary);
+  border-top: var(--mh-table-border-width) solid var(--mh-table-border-color);
+  padding: var(--mh-spacing-3);
+  font-size: var(--mh-font-size-sm);
+  color: var(--mh-text-secondary);
+  text-align: center;
+}
+
+/* Sort Indicators */
+.mh-table-sort {
+  margin-left: var(--mh-spacing-2);
+  color: var(--mh-text-muted);
+  cursor: pointer;
+  transition: color var(--mh-transition-fast);
+}
+
+.mh-table-sort:hover {
+  color: var(--mh-text-primary);
+}
+
+.mh-table-sort--active {
+  color: var(--mh-color-primary);
+}
+
+.mh-table-sort--asc::after {
+  content: '↑';
+  margin-left: var(--mh-spacing-1);
+}
+
+.mh-table-sort--desc::after {
+  content: '↓';
+  margin-left: var(--mh-spacing-1);
+}
+
+/* Checkbox Styling */
+.mh-table-checkbox {
+  accent-color: var(--mh-color-primary);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Resize Handle */
+.mh-table-resize-handle {
+  width: 8px; /* Wider for easier grabbing */
+  cursor: col-resize;
+  background: transparent;
+  position: absolute;
+  right: -4px; /* Center it on the border */
+  top: 0;
+  bottom: 0;
+  z-index: var(--mh-z-table-drag); /* Higher z-index to prevent drag conflicts */
+  transition: background-color var(--mh-duration-150) var(--mh-easing-out);
+  /* Prevent dragging on resize handle */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  /* Visual indicator */
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+
+.mh-table-resize-handle:hover {
+  background: rgba(var(--mh-color-primary-rgb), 0.1);
+  border-left-color: var(--mh-color-primary);
+  border-right-color: var(--mh-color-primary);
+}
+
+.mh-table-resize-handle:active {
+  background: rgba(var(--mh-color-primary-rgb), 0.2);
+  border-left-color: var(--mh-color-primary);
+  border-right-color: var(--mh-color-primary);
+}
+
+/* Loading State */
+.mh-table-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mh-spacing-16);
+  background: var(--mh-bg-loading);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--mh-z-modal);
+}
+
+.mh-table-spinner {
+  display: flex;
+  gap: var(--mh-spacing-1);
+  margin-bottom: var(--mh-spacing-4);
+}
+
+.mh-table-spinner .rect {
+  width: 4px;
+  height: 20px;
+  background-color: var(--mh-color-primary);
+  animation: mh-spinner-stretch 1.2s infinite ease-in-out;
+}
+
+.mh-table-spinner .rect:nth-child(2) { animation-delay: -1.1s; }
+.mh-table-spinner .rect:nth-child(3) { animation-delay: -1.0s; }
+.mh-table-spinner .rect:nth-child(4) { animation-delay: -0.9s; }
+.mh-table-spinner .rect:nth-child(5) { animation-delay: -0.8s; }
+
+@keyframes mh-spinner-stretch {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1.0);
+  }
+}
+
+.mh-table-loading-text {
+  color: var(--mh-text-secondary);
+  font-size: var(--mh-font-size-sm);
+}
+
+/* Empty State */
+.mh-table-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mh-spacing-16);
+  color: var(--mh-text-muted);
+  text-align: center;
+}
+
+.mh-table-empty-icon {
+  font-size: 48px;
+  margin-bottom: var(--mh-spacing-4);
+  opacity: 0.5;
+}
+
+.mh-table-empty-text {
+  font-size: var(--mh-font-size-base);
+  margin-bottom: var(--mh-spacing-2);
+}
+
+.mh-table-empty-subtext {
+  font-size: var(--mh-font-size-sm);
+  color: var(--mh-text-muted);
+}
+
+/* Complex Mode (Fixed Columns) */
+.mh-table-complex {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Ensure all tables in complex mode have consistent styling */
+.mh-table-complex .mh-table,
+.mh-table-complex table {
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+  width: 100% !important;
+  font-size: inherit;
+  line-height: 1.4;
+}
+
+/* Ensure column groups are identical across all sections */
+.mh-table-complex colgroup col {
+  box-sizing: border-box;
+}
+
+/* Force consistent table structure */
+.mh-table-complex .mh-table-fixed-left table,
+.mh-table-complex .mh-table-main table,
+.mh-table-complex .mh-table-fixed-right table {
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  width: 100% !important;
+}
+
+/* Force consistent row heights in complex mode */
+.mh-table-complex .mh-table-row,
+.mh-table-complex tr {
+  height: 60px !important;
+  max-height: 60px;
+  min-height: 60px;
+}
+
+.mh-table-complex .mh-table-cell,
+.mh-table-complex td {
+  height: 60px !important;
+  max-height: 60px;
+  min-height: 60px;
+  vertical-align: middle;
+}
+
+.mh-table-section--header,
+.mh-table-section--body {
+  display: flex;
+  position: relative;
+}
+
+.mh-table-section--header {
+  flex-shrink: 0;
+  position: relative;
+  height: auto;
+}
+
+.mh-table-section--body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+
+
+.mh-table-fixed-left,
+.mh-table-fixed-right {
+  flex-shrink: 0;
+  z-index: 2;
+  background: var(--mh-bg-primary);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.mh-table-fixed-left {
+  box-shadow: 2px 0 5px -2px rgba(0,0,0,0.1);
+}
+
+.mh-table-fixed-right {
+  box-shadow: -2px 0 5px -2px rgba(0,0,0,0.1);
+}
+
+/* Fixed headers should be absolutely positioned */
+.mh-table-section--header .mh-table-fixed-left,
+.mh-table-section--header .mh-table-fixed-right {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  background: var(--mh-bg-primary);
+}
+
+.mh-table-section--header .mh-table-fixed-left {
+  left: 0;
+}
+
+.mh-table-section--header .mh-table-fixed-right {
+  right: 0;
+}
+
+/* Hide scrollbars on fixed columns but allow scrolling */
+.mh-table-section--body .mh-table-fixed-left,
+.mh-table-section--body .mh-table-fixed-right {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  /* Add space at bottom to match main section scrollbar height */
+  box-sizing: border-box;
+}
+
+.mh-table-section--body .mh-table-fixed-left::-webkit-scrollbar,
+.mh-table-section--body .mh-table-fixed-right::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Scrollbar height compensation is handled by JavaScript */
+
+/* Remove unified table CSS - using three-section approach */
+
+.mh-table-main {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mh-table-section--header .mh-table-main {
+  overflow: hidden;
+}
+
+.mh-table-section--body .mh-table-main {
+  overflow: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mh-table-container {
+    font-size: var(--mh-font-size-xs);
+  }
+  
+  .mh-table-cell,
+  .mh-table td,
+  .mh-table-header th,
+  .mh-table th {
+    padding: var(--mh-spacing-2);
+  }
+  
+  .mh-table-header th,
+  .mh-table th {
+    position: static;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .mh-table-container {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .mh-table-body {
+    overflow: visible;
+  }
+  
+  .mh-table-header th,
+  .mh-table th {
+    position: static;
+  }
+}
+
+/* Focus Management */
+.mh-table-container:focus-within {
+  outline: 2px solid var(--mh-border-color-focus);
+  outline-offset: 2px;
+}
+
+.mh-table-row:focus-within,
+.mh-table tr:focus-within {
+  outline: 2px solid var(--mh-border-color-focus);
+  outline-offset: -2px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .mh-table-container {
+    border-width: 2px;
+  }
+  
+  .mh-table-header th,
+  .mh-table th,
+  .mh-table-cell,
+  .mh-table td {
+    border-width: 1px;
+  }
+}
+
+/* Compact mode */
+.mh-table--compact .mh-table-cell,
+.mh-table--compact .mh-table td {
+  padding: 4px 8px;
+  font-size: var(--mh-font-size-sm);
+}
+.mh-table--compact .mh-table-header th,
+.mh-table--compact .mh-table th {
+  padding: 6px 8px;
+  font-size: var(--mh-font-size-sm);
+}
+
+/* Alignment utilities */
+.mh-table-cell.is-numeric,
+.mh-table td.is-numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.mh-table-cell.is-center,
+.mh-table td.is-center {
+  text-align: center;
+}
+
+/* Chip utility */
+.mh-chip {
+  display: inline-block;
+  padding: 0 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #e3eafc;
+  color: #2563eb;
+  line-height: 20px;
+  vertical-align: middle;
+}
+
+/* Table header modern look */
+.mh-table-header th,
+.mh-table th {
+  background: var(--mh-table-header-bg);
+  font-weight: var(--mh-font-weight-semibold);
+  color: var(--mh-text-primary);
+  border-bottom: 1px solid var(--mh-table-header-border);
+  box-shadow: none;
+  z-index: var(--mh-z-sticky);
+  position: sticky;
+  top: 0;
+  height: 60px !important; /* Match row height exactly */
+  max-height: 60px !important;
+  padding: 0 16px; /* Match cell padding */
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mh-table-header-shadow {
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,0.04);
+}
+
+/* Row and cell borders */
+.mh-table-row,
+.mh-table tr {
+  border-bottom: 1px solid var(--mh-table-border-color);
+}
+.mh-table-cell,
+.mh-table td {
+  border-bottom: none;
+  border-right: none;
+}
+
+/* Remove vertical lines */
+.mh-table,
+.mh-table-container table {
+  border-right: none;
+  border-left: none;
+}
+
+/* Subtle row striping and hover */
+.mh-table-row:nth-child(even),
+.mh-table tr:nth-child(even) {
+  background: var(--mh-table-stripe-color);
+}
+.mh-table-row:hover,
+.mh-table tr:hover {
+  background: var(--mh-table-hover-color);
+}
+
+/* Numeric cell color (optional) */
+.mh-table-cell.is-numeric.positive,
+.mh-table td.is-numeric.positive {
+  color: #1a7f37;
+}
+.mh-table-cell.is-numeric.negative,
+.mh-table td.is-numeric.negative {
+  color: #d93025;
+}
+
+.mh-chip--success { background: #e6f4ea; color: #1a7f37; }
+.mh-chip--warning { background: #fff7e6; color: #b26a00; }
+.mh-chip--default { background: #ececec; color: #5f6368; }
+
+/* Virtualization Performance Optimizations */
+.mh-table-body--virtualized {
+  position: relative;
+  contain: layout style paint;
+}
+
+.mh-table-body--virtualized .mh-table-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  contain: layout style paint;
+  transform: translateZ(0); /* Force GPU acceleration */
+}
+
+/* Smooth scrolling performance for virtualized tables */
+.mh-table-main,
+.mh-table-fixed-left,
+.mh-table-fixed-right {
+  scroll-behavior: auto; /* Disable smooth scrolling for performance */
+  will-change: scroll-position;
+}
+
+/* Performance optimizations for large datasets */
+.mh-table-complex.mh-table--virtualized {
+  contain: layout style paint;
+}
+
+.mh-table-complex.mh-table--virtualized .mh-table-row {
+  contain: layout style paint;
+  transform: translateZ(0);
+}
+
+/* Drag and Drop Styles */
+.mh-drag-clue {
+  position: fixed;
+  z-index: var(--mh-z-table-drag);
+  background: var(--mh-color-primary);
+  color: var(--mh-color-white);
+  padding: var(--mh-spacing-2) var(--mh-spacing-3);
+  border-radius: var(--mh-border-radius-md);
+  font-size: var(--mh-font-size-sm);
+  font-weight: var(--mh-font-weight-medium);
+  box-shadow: var(--mh-shadow-lg);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all var(--mh-duration-150) var(--mh-easing-out);
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mh-drag-clue--active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mh-reorder-cue {
+  position: fixed;
+  z-index: var(--mh-z-table-drag);
+  width: 2px;
+  height: 40px;
+  background: var(--mh-color-primary);
+  display: none;
+  pointer-events: none;
+}
+
+.mh-reorder-cue::before,
+.mh-reorder-cue::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+}
+
+.mh-reorder-cue::before {
+  top: -4px;
+  border-bottom-color: var(--mh-color-primary);
+  border-top: none;
+}
+
+.mh-reorder-cue::after {
+  bottom: -4px;
+  border-top-color: var(--mh-color-primary);
+  border-bottom: none;
+}
+
+/* Column swap highlight for better visual feedback */
+.mh-column-swap-highlight {
+  background: var(--mh-color-primary-light) !important;
+  transition: background-color var(--mh-duration-150) var(--mh-easing-out);
+}
+
+/* Make draggable columns have a grab cursor, but exclude resize handle */
+.mh-table-header th.draggable {
+  cursor: grab;
+  user-select: none;
+  transition: background-color var(--mh-duration-150) var(--mh-easing-out);
+}
+
+.mh-table-header th.draggable:hover {
+  background: var(--mh-bg-hover);
+}
+
+.mh-table-header th.draggable:active {
+  cursor: grabbing;
+}
+
+/* Ensure resize handle takes precedence over column dragging */
+.mh-table-header th.draggable .mh-table-resize-handle {
+  cursor: col-resize !important;
+  pointer-events: auto;
+}
+
+/* Prevent dragging when hovering over resize handle */
+.mh-table-header th.draggable:has(.mh-table-resize-handle:hover) {
+  cursor: default;
+}
+
+/* Improve drag feedback */
+.mh-column-dragging-ghost {
+  opacity: 0.4;
+  background: var(--mh-bg-hover) !important;
+  transform: scale(0.95);
+}
+
+.mh-column-dragging {
+  opacity: 0.9;
+  background: var(--mh-color-primary-light) !important;
+  box-shadow: var(--mh-shadow-lg);
+  transform: rotate(1deg) scale(1.02);
+  z-index: var(--mh-z-table-drag);
+}
+
+.mh-column-chosen {
+  background: var(--mh-bg-hover) !important;
+  cursor: grabbing !important;
+}
+
+.mh-column-fallback {
+  opacity: 0.6;
+  background: var(--mh-color-primary-light) !important;
+  border: 2px dashed var(--mh-color-primary);
+  transform: rotate(1deg);
+} 

@@ -1,0 +1,116 @@
+/* Theme Variables */
+:root {
+  /* Dark Theme (default) */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #161616;
+  --bg-hover: #222;
+  --bg-card: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-muted: #888;
+  
+  --border-primary: #333;
+  --border-secondary: #333;
+  
+  --shadow-primary: rgba(0, 0, 0, 0.3);
+  --shadow-secondary: rgba(0, 0, 0, 0.2);
+  
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Override design-tokens.css variables for dark theme */
+  --mh-bg-primary: #1a1a1a;
+  --mh-bg-secondary: #161616;
+  --mh-bg-tertiary: #222;
+  --mh-bg-header: #1a1a1a;
+  --mh-bg-hover: #222;
+  
+  --mh-border-color: #333;
+  --mh-border-color-light: #333;
+  --mh-border-color-dark: #444;
+  
+  --mh-text-primary: #ffffff;
+  --mh-text-secondary: #e0e0e0;
+  --mh-text-muted: #888;
+  
+  --mh-table-border-color: #333;
+  --mh-table-stripe-color: #161616;
+  --mh-table-hover-color: #222;
+  --mh-table-header-bg: #1a1a1a;
+  --mh-table-header-border: #333;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #f5f5f5;
+  --bg-hover: #e9ecef;
+  --bg-card: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  
+  --border-primary: #dee2e6;
+  --border-secondary: #e9ecef;
+  
+  --shadow-primary: rgba(0, 0, 0, 0.1);
+  --shadow-secondary: rgba(0, 0, 0, 0.05);
+  
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Override design-tokens.css variables for light theme */
+  --mh-bg-primary: #ffffff;
+  --mh-bg-secondary: #f8f9fa;
+  --mh-bg-tertiary: #f5f5f5;
+  --mh-bg-header: #f8f9fa;
+  --mh-bg-hover: #e9ecef;
+  
+  --mh-border-color: #dee2e6;
+  --mh-border-color-light: #e9ecef;
+  --mh-border-color-dark: #ced4da;
+  
+  --mh-text-primary: #212529;
+  --mh-text-secondary: #495057;
+  --mh-text-muted: #6c757d;
+  
+  --mh-table-border-color: #dee2e6;
+  --mh-table-stripe-color: #f5f5f5;
+  --mh-table-hover-color: #e9ecef;
+  --mh-table-header-bg: #f8f9fa;
+  --mh-table-header-border: #dee2e6;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px var(--shadow-secondary);
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow-primary);
+}
+
+.theme-toggle::before {
+  content: '🌙';
+  margin-right: 6px;
+}
+
+[data-theme="light"] .theme-toggle::before {
+  content: '☀️';
+} 

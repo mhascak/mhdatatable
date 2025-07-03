@@ -1,3 +1,26 @@
+# OS
 .DS_Store
+
+# Logs
 *.log
-node_modules
+
+# Dependency directories
+node_modules/
+vue3-migration/node_modules/
+
+# Build output
+dist/
+examples/dist/
+vue3-migration/dist/
+
+# IDE/project files
+.idea/
+*.iml
+
+# Vite cache
+.vite/
+vue3-migration/node_modules/.vite/
+
+# Optional: ignore lock files (uncomment if you don't want to commit them)
+# package-lock.json
+# vue3-migration/package-lock.json

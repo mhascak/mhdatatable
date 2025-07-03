@@ -1,0 +1,399 @@
+/* Component Styles for MH DataTable
+   Complex features like fixed columns, pagination, and UI components
+*/
+
+/* Complex Table Layout */
+.mh-table-complex {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mh-table-section {
+  position: relative;
+  display: flex;
+  min-height: 0;
+}
+
+.mh-table-section--header {
+  flex-shrink: 0;
+  border-bottom: var(--mh-table-border-width) solid var(--mh-table-border-color);
+}
+
+.mh-table-section--body {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Fixed Columns */
+.mh-table-fixed-left,
+.mh-table-fixed-right {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  z-index: var(--mh-z-table-fixed);
+  background: var(--mh-bg-primary);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mh-table-fixed-left {
+  left: 0;
+  box-shadow: var(--mh-shadow-md);
+}
+
+.mh-table-fixed-right {
+  right: 0;
+  box-shadow: var(--mh-shadow-md);
+}
+
+.mh-table-fixed-left .mh-table-section--body,
+.mh-table-fixed-right .mh-table-section--body {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Main Table Area */
+.mh-table-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mh-table-main .mh-table-section--body {
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/* Simple Table Mode */
+.mh-table-simple {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Pagination Component */
+.mh-table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mh-spacing-4);
+  background: var(--mh-bg-secondary);
+  border-top: var(--mh-table-border-width) solid var(--mh-table-border-color);
+  font-size: var(--mh-font-size-sm);
+  color: var(--mh-text-secondary);
+  flex-shrink: 0;
+}
+
+.mh-table-pagination--left {
+  display: flex;
+  align-items: center;
+  gap: var(--mh-spacing-4);
+}
+
+.mh-table-pagination--center {
+  display: flex;
+  align-items: center;
+  gap: var(--mh-spacing-2);
+}
+
+.mh-table-pagination--right {
+  display: flex;
+  align-items: center;
+  gap: var(--mh-spacing-4);
+  margin-left: auto;
+}
+
+/* Pagination Controls */
+.mh-table-pagination-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: var(--mh-spacing-1) var(--mh-spacing-2);
+  border: var(--mh-table-border-width) solid var(--mh-border-color);
+  background: var(--mh-bg-primary);
+  color: var(--mh-text-primary);
+  border-radius: var(--mh-border-radius-base);
+  cursor: pointer;
+  transition: all var(--mh-transition-fast);
+  text-decoration: none;
+  font-size: var(--mh-font-size-sm);
+}
+
+.mh-table-pagination-button:hover:not(:disabled) {
+  background: var(--mh-bg-hover);
+  border-color: var(--mh-border-color-dark);
+}
+
+.mh-table-pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mh-table-pagination-button--active {
+  background: var(--mh-color-primary);
+  color: var(--mh-color-white);
+  border-color: var(--mh-color-primary);
+}
+
+.mh-table-pagination-button--active:hover {
+  background: var(--mh-color-primary-hover);
+  border-color: var(--mh-color-primary-hover);
+}
+
+/* Page Size Selector */
+.mh-table-page-size {
+  display: flex;
+  align-items: center;
+  gap: var(--mh-spacing-2);
+}
+
+.mh-table-page-size select {
+  padding: var(--mh-spacing-1) var(--mh-spacing-2);
+  border: var(--mh-table-border-width) solid var(--mh-border-color);
+  border-radius: var(--mh-border-radius-base);
+  background: var(--mh-bg-primary);
+  color: var(--mh-text-primary);
+  font-size: var(--mh-font-size-sm);
+  cursor: pointer;
+  transition: border-color var(--mh-transition-fast);
+}
+
+.mh-table-page-size select:focus {
+  outline: none;
+  border-color: var(--mh-border-color-focus);
+}
+
+/* Action Buttons */
+.mh-table-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: var(--mh-table-border-width) solid var(--mh-border-color);
+  background: var(--mh-bg-primary);
+  color: var(--mh-text-secondary);
+  border-radius: var(--mh-border-radius-base);
+  cursor: pointer;
+  transition: all var(--mh-transition-fast);
+  text-decoration: none;
+}
+
+.mh-table-action-button:hover {
+  background: var(--mh-bg-hover);
+  color: var(--mh-text-primary);
+  border-color: var(--mh-border-color-dark);
+}
+
+.mh-table-action-button--primary {
+  background: var(--mh-color-primary);
+  color: var(--mh-color-white);
+  border-color: var(--mh-color-primary);
+}
+
+.mh-table-action-button--primary:hover {
+  background: var(--mh-color-primary-hover);
+  border-color: var(--mh-color-primary-hover);
+}
+
+/* Column Menu */
+.mh-table-column-menu {
+  position: fixed;
+  z-index: var(--mh-z-dropdown);
+  background: var(--mh-bg-primary);
+  border: var(--mh-table-border-width) solid var(--mh-border-color);
+  border-radius: var(--mh-border-radius-base);
+  box-shadow: var(--mh-shadow-lg);
+  min-width: 200px;
+  max-width: 300px;
+  overflow: hidden;
+}
+
+.mh-table-column-menu-header {
+  padding: var(--mh-spacing-3);
+  border-bottom: var(--mh-table-border-width) solid var(--mh-border-color);
+  background: var(--mh-bg-header);
+  font-weight: var(--mh-font-weight-semibold);
+  color: var(--mh-text-primary);
+}
+
+.mh-table-column-menu-body {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.mh-table-column-menu-item {
+  display: flex;
+  align-items: center;
+  padding: var(--mh-spacing-2) var(--mh-spacing-3);
+  cursor: pointer;
+  transition: background-color var(--mh-transition-fast);
+  border-bottom: var(--mh-table-border-width) solid var(--mh-border-color-light);
+}
+
+.mh-table-column-menu-item:hover {
+  background: var(--mh-bg-hover);
+}
+
+.mh-table-column-menu-item:last-child {
+  border-bottom: none;
+}
+
+.mh-table-column-menu-checkbox {
+  margin-right: var(--mh-spacing-2);
+}
+
+/* Context Menu */
+.mh-table-context-menu {
+  position: fixed;
+  z-index: var(--mh-z-dropdown);
+  background: var(--mh-bg-primary);
+  border: var(--mh-table-border-width) solid var(--mh-border-color);
+  border-radius: var(--mh-border-radius-base);
+  box-shadow: var(--mh-shadow-lg);
+  min-width: 150px;
+  overflow: hidden;
+}
+
+.mh-table-context-menu-item {
+  display: flex;
+  align-items: center;
+  padding: var(--mh-spacing-2) var(--mh-spacing-3);
+  cursor: pointer;
+  transition: background-color var(--mh-transition-fast);
+  border-bottom: var(--mh-table-border-width) solid var(--mh-border-color-light);
+  color: var(--mh-text-primary);
+  text-decoration: none;
+}
+
+.mh-table-context-menu-item:hover {
+  background: var(--mh-bg-hover);
+}
+
+.mh-table-context-menu-item:last-child {
+  border-bottom: none;
+}
+
+.mh-table-context-menu-item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mh-table-context-menu-item--disabled:hover {
+  background: transparent;
+}
+
+/* Drag and Drop Elements */
+.mh-table-drag-clue,
+.mh-table-reorder-clue {
+  position: fixed;
+  z-index: var(--mh-z-table-drag);
+  pointer-events: none;
+  display: none;
+  background: var(--mh-color-primary);
+  color: var(--mh-color-white);
+  padding: var(--mh-spacing-2) var(--mh-spacing-3);
+  border-radius: var(--mh-border-radius-base);
+  font-size: var(--mh-font-size-sm);
+  box-shadow: var(--mh-shadow-lg);
+}
+
+.mh-table-drag-clue--active,
+.mh-table-reorder-clue--active {
+  display: block;
+}
+
+/* Ghost Line for Column Resizing */
+.mh-table-ghost-line {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  background: var(--mh-color-primary);
+  z-index: var(--mh-z-table-ghost);
+  pointer-events: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mh-table-ghost-ticks {
+  width: 18px;
+  height: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--mh-color-primary);
+}
+
+.mh-table-ghost-ticks--top {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mh-table-ghost-ticks--bottom {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Selection Checkbox */
+.mh-table-selection-cell {
+  width: 40px;
+  text-align: center;
+  padding: var(--mh-table-cell-padding-y) var(--mh-spacing-1);
+}
+
+.mh-table-selection-header {
+  width: 40px;
+  text-align: center;
+  padding: var(--mh-table-header-padding-y) var(--mh-spacing-1);
+}
+
+/* Responsive Design for Components */
+@media (max-width: 768px) {
+  .mh-table-pagination {
+    flex-direction: column;
+    gap: var(--mh-spacing-3);
+    padding: var(--mh-spacing-3);
+  }
+  
+  .mh-table-pagination--right {
+    margin-left: 0;
+    justify-content: center;
+  }
+  
+  .mh-table-column-menu,
+  .mh-table-context-menu {
+    min-width: 150px;
+    max-width: 250px;
+  }
+}
+
+/* Print Styles for Components */
+@media print {
+  .mh-table-pagination,
+  .mh-table-column-menu,
+  .mh-table-context-menu,
+  .mh-table-drag-clue,
+  .mh-table-reorder-clue,
+  .mh-table-ghost-line {
+    display: none !important;
+  }
+  
+  .mh-table-fixed-left,
+  .mh-table-fixed-right {
+    position: static;
+    box-shadow: none;
+  }
+} 

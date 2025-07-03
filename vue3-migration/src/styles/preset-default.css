@@ -1,0 +1,305 @@
+/* Default DataTable Preset Styles
+   Modern preset using design tokens and best practices
+   Users can override or replace this file for custom themes.
+*/
+
+/* Import core styles */
+@import './design-tokens.css';
+@import './core.css';
+@import './components.css';
+
+/* Default Theme Overrides */
+.mh-datatable {
+  font-family: var(--mh-font-family);
+  color: var(--mh-text-primary);
+  background: var(--mh-bg-primary);
+}
+
+/* Legacy class support for backward compatibility */
+.table {
+  /* Inherit from mh-table */
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-family: var(--mh-font-family);
+  font-size: var(--mh-font-size-sm);
+  line-height: var(--mh-line-height-normal);
+  color: var(--mh-text-primary);
+  background: var(--mh-bg-primary);
+  table-layout: fixed;
+}
+
+.table-striped {
+  /* Inherit from mh-table */
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-family: var(--mh-font-family);
+  font-size: var(--mh-font-size-sm);
+  line-height: var(--mh-line-height-normal);
+  color: var(--mh-text-primary);
+  background: var(--mh-bg-primary);
+  table-layout: fixed;
+}
+
+.table-hover {
+  /* Inherit from mh-table */
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-family: var(--mh-font-family);
+  font-size: var(--mh-font-size-sm);
+  line-height: var(--mh-line-height-normal);
+  color: var(--mh-text-primary);
+  background: var(--mh-bg-primary);
+  table-layout: fixed;
+}
+
+/* Utility classes */
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+
+.flex-right {
+  margin-left: auto;
+}
+
+/* Legacy pagination styles for backward compatibility */
+.tablePagination {
+  /* Inherit from mh-table-pagination */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mh-spacing-4);
+  background: var(--mh-bg-secondary);
+  border-top: var(--mh-table-border-width) solid var(--mh-table-border-color);
+  font-size: var(--mh-font-size-sm);
+  color: var(--mh-text-secondary);
+  flex-shrink: 0;
+}
+
+.tablePagination-wrap {
+  display: flex;
+  flex-direction: row;
+  flex-basis: auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Legacy button styles */
+.mh-button-saveView,
+.mh-button-refresh {
+  /* Inherit from mh-table-action-button */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: var(--mh-table-border-width) solid var(--mh-border-color);
+  background: var(--mh-bg-primary);
+  color: var(--mh-text-secondary);
+  border-radius: var(--mh-border-radius-base);
+  cursor: pointer;
+  transition: all var(--mh-transition-fast);
+  text-decoration: none;
+}
+
+.mh-button-saveView:hover,
+.mh-button-refresh:hover {
+  /* Inherit from mh-table-action-button:hover */
+  background: var(--mh-bg-hover);
+  color: var(--mh-text-primary);
+  border-color: var(--mh-border-color-dark);
+}
+
+/* Icon font support */
+.mh-icon {
+  font-family: 'mh-grid';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1em;
+}
+
+.icon-floppy::before {
+  content: '\e81f';
+}
+
+.icon-arrows-ccw::before {
+  content: '\e809';
+}
+
+/* Additional utility classes */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.gap-2 {
+  gap: var(--mh-spacing-2) !important;
+}
+
+.gap-3 {
+  gap: var(--mh-spacing-3) !important;
+}
+
+.gap-4 {
+  gap: var(--mh-spacing-4) !important;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .d-md-none {
+    display: none !important;
+  }
+  
+  .d-md-block {
+    display: block !important;
+  }
+  
+  .d-md-flex {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .d-sm-none {
+    display: none !important;
+  }
+  
+  .d-sm-block {
+    display: block !important;
+  }
+  
+  .d-sm-flex {
+    display: flex !important;
+  }
+}
+
+.mh-table,
+.mh-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: inherit;
+  background: #fff;
+  color: #222;
+}
+
+.mh-table-header th,
+.mh-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.mh-table-row,
+.mh-table tr {
+  border-bottom: 1px solid #eee;
+}
+
+.mh-table-cell,
+.mh-table td {
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+
+.mh-table-row:hover {
+  background: #f9fafb;
+}
+
+.mh-table-sort {
+  margin-left: 6px;
+  color: #888;
+  cursor: pointer;
+}
+.mh-table-sort.fa-sort-up,
+.mh-table-sort.fa-sort-down {
+  color: #007bff;
+}
+
+.mh-table-resize-handle {
+  width: 4px;
+  cursor: col-resize;
+  background: #e0e0e0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+.mh-table-checkbox {
+  accent-color: #007bff;
+}
+
+.mh-table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 0;
+}
+
+.mh-table-pagination .pagination {
+  margin: 0 8px;
+}
+
+.mh-table-pagination .page-item.active .page-link {
+  background: #007bff;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.mh-table-footer {
+  background: #fafafa;
+  font-size: 0.95em;
+  color: #666;
+} 
