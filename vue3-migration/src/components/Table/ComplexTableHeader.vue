@@ -14,10 +14,11 @@
       </th>
       
       <!-- Regular header cells -->
-      <th v-for="(header, headerIndex) in level" 
+      <th v-for="(header, headerIndex) in level"
           :key="`${levelIndex}-${headerIndex}-${header.field}`"
+          :data-index="isLeafHeader(header) ? getColumnIndex(header) : null"
           :class="['mh-table-cell', 'mh-table-header-cell', header.class]"
-          :style="[header.style, { minWidth: '80px' }]"
+          :style="[header.style, isLeafHeader(header) ? { width: getHeaderWidth(header) } : {}, { minWidth: '80px' }]"
           :colspan="header.colspan"
           :rowspan="header.rowspan"
           @click="handleHeaderClick(header, levelIndex, headerIndex)">
@@ -260,6 +261,25 @@ function isFilterApplied(header: ComplexHeader): boolean {
 function getColumnIndex(header: ComplexHeader): number {
   const column = getColumnForHeader(header)
   return column?.index || 0
+}
+
+/**
+ * Get width for header cell
+ */
+function getHeaderWidth(header: ComplexHeader): string | undefined {
+  const column = getColumnForHeader(header)
+  if (column?.colStyle?.width) {
+    return column.colStyle.width
+  }
+  if (header.children) {
+    const childWidths = header.children
+      .map(child => parseFloat(getHeaderWidth(child) || '0'))
+      .reduce((a, b) => a + b, 0)
+    if (childWidths > 0) {
+      return `${childWidths}px`
+    }
+  }
+  return undefined
 }
 
 /**
