@@ -195,6 +195,13 @@ const columnMenuState = ref({
   y: 0
 })
 
+// Resizing state
+const isMoving = ref(false)
+const movingColumn = ref<TableColumn | null>(null)
+const movingElement = ref<HTMLElement | null>(null)
+const movingStartX = ref<number | null>(null)
+const tableType = computed(() => props.leftFixed ? 'L' : props.rightFixed ? 'R' : 'M')
+
 // Selection state
 const indeterminate = computed(() => {
   const checkedCount = props.bodyData?.filter((row: any) => row._isChecked).length || 0
@@ -314,7 +321,62 @@ function emitMenu(action: string, column: TableColumn | undefined): void {
  */
 function resizeStart(event: MouseEvent, column: TableColumn | undefined): void {
   if (!column) return
-  emit('header-resize', event, column)
+  event.preventDefault()
+  event.stopPropagation()
+  movingStartX.value = event.pageX
+  isMoving.value = true
+  movingColumn.value = column
+  movingElement.value = (event.target as HTMLElement).parentElement
+
+  if (movingElement.value) {
+    movingElement.value.setAttribute('data-resizing', 'true')
+  }
+
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+  window.addEventListener('mousemove', handleResize)
+  window.addEventListener('mouseup', resizeEnd)
+  emit('header-resize', { event: 'start', col: column })
+}
+
+function getDeltaX(e: MouseEvent) {
+  if (movingStartX.value === null) return 0
+  let deltaX = e.pageX - movingStartX.value
+  if (tableType.value === 'R') deltaX = -deltaX
+  return deltaX
+}
+
+function getNewWidth(deltaX: number) {
+  if (!movingElement.value) return 0
+  const oldWidth = parseFloat((movingElement.value.offsetWidth || 0).toString())
+  return oldWidth + deltaX
+}
+
+function resizeEnd(e: MouseEvent) {
+  document.body.style.cursor = 'default'
+  document.body.style.userSelect = ''
+  window.removeEventListener('mouseup', resizeEnd)
+  window.removeEventListener('mousemove', handleResize)
+
+  if (movingElement.value) {
+    movingElement.value.removeAttribute('data-resizing')
+  }
+
+  const deltaX = getDeltaX(e)
+  const newWidth = getNewWidth(deltaX)
+  emit('header-resize', { event: 'end', col: movingColumn.value, newWidth })
+  isMoving.value = false
+  movingColumn.value = null
+  movingElement.value = null
+  movingStartX.value = null
+}
+
+function handleResize(e: MouseEvent) {
+  if (isMoving.value && movingColumn.value && movingElement.value) {
+    const deltaX = getDeltaX(e)
+    const newWidth = getNewWidth(deltaX)
+    emit('header-resize', { event: 'resizing', col: movingColumn.value, newWidth, deltaX })
+  }
 }
 
 /**
