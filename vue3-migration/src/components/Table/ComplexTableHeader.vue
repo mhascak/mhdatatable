@@ -1,11 +1,11 @@
 <template>
   <thead class="mh-table-header mh-table-header--complex">
     <!-- Render each header level -->
-    <tr v-for="(level, levelIndex) in headerStructure.headers" :key="levelIndex" class="mh-table-row">
+    <tr v-for="(level, levelIndex) in sectionHeaders.headers" :key="levelIndex" class="mh-table-row">
       <!-- Selection column header (only on first level) -->
       <th v-if="shouldRenderSelection && levelIndex === 0" 
           class="mh-table-cell -selectable-column" 
-          :rowspan="headerStructure.levels"
+          :rowspan="sectionHeaders.levels"
           key="--th-multi">
         <MultiSelect 
           :status="{ indeterminate, allCheck }" 
@@ -97,6 +97,10 @@ const props = defineProps({
     type: Array as PropType<TableColumn[]>,
     required: true
   },
+  tableColumns: {
+    type: Array as PropType<TableColumn[]>,
+    required: true
+  },
   query: {
     type: Object as PropType<TableQuery>,
     required: true
@@ -134,6 +138,54 @@ const emit = defineEmits([
 const columnsRef = computed(() => props.columns)
 const { headerStructure, leafColumns, getColumnByPath, hasComplexHeaders } = useComplexHeaders(columnsRef)
 
+// Determine which leaf fields belong to this table section
+const allowedFields = computed(() => props.tableColumns.map(c => c.field))
+
+// Build a filtered header structure for the current section
+function filterHeaders(headers: ComplexHeader[]): ComplexHeader[] {
+  const maxDepth = headerStructure.value.levels
+
+  const traverse = (items: ComplexHeader[], level: number): ComplexHeader[] => {
+    const res: ComplexHeader[] = []
+    items.forEach(h => {
+      if (h.children && h.children.length > 0) {
+        const children = traverse(h.children, level + 1)
+        if (children.length === 0) return
+        res.push({
+          ...h,
+          level,
+          children,
+          colspan: children.reduce((s, c) => s + (c.colspan || 1), 0),
+          rowspan: 1
+        })
+      } else if (allowedFields.value.includes(h.field)) {
+        res.push({
+          ...h,
+          level,
+          colspan: 1,
+          rowspan: maxDepth - level
+        })
+      }
+    })
+    return res
+  }
+
+  return traverse(headers, 0)
+}
+
+const sectionHeaders = computed(() => {
+  const filteredTree = filterHeaders(headerStructure.value.tree)
+  const levels: ComplexHeader[][] = Array.from({ length: headerStructure.value.levels }, () => [])
+  const buildLevels = (nodes: ComplexHeader[]) => {
+    nodes.forEach(node => {
+      levels[node.level].push(node)
+      if (node.children) buildLevels(node.children)
+    })
+  }
+  buildLevels(filteredTree)
+  return { levels: headerStructure.value.levels, headers: levels }
+})
+
 // Column menu state
 const columnMenuState = ref({
   visible: false,
@@ -168,7 +220,7 @@ function handleHeaderClick(header: ComplexHeader, levelIndex: number, headerInde
  * Check if header is a leaf (bottom-level) header
  */
 function isLeafHeader(header: ComplexHeader): boolean {
-  return (header.rowspan || 1) > 1 || header.level === headerStructure.value.levels - 1
+  return (header.rowspan || 1) > 1 || header.level === sectionHeaders.value.levels - 1
 }
 
 /**

@@ -20,10 +20,19 @@ export function useComplexHeaders(columns: Ref<TableColumn[]>) {
           style: col.thStyle,
           class: col.thClass,
           column: col
-        }))]
+        }))],
+        tree: columns.value.map(col => ({
+          field: col.field,
+          title: col.title,
+          colspan: 1,
+          rowspan: 1,
+          level: 0,
+          style: col.thStyle,
+          class: col.thClass
+        }))
       }
     }
-    
+
     return buildHeaderStructure(columns.value)
   })
   
@@ -79,50 +88,50 @@ export function useComplexHeaders(columns: Ref<TableColumn[]>) {
     }
     
     // Build headers recursively
-    const buildLevel = (columns: TableColumn[], level: number, parentPath = '') => {
+    const buildLevel = (columns: TableColumn[], level: number): ComplexHeader[] => {
+      const headers: ComplexHeader[] = []
       columns.forEach(col => {
-        const currentPath = parentPath ? `${parentPath}.${col.field}` : col.field
-        
-                 if (col.children && col.children.length > 0) {
-           // Parent header
-           const colspan = getColumnSpan(col.children)
-           const header: ComplexHeader = {
-             field: col.field,
-             title: col.title,
-             colspan,
-             rowspan: 1,
-             level,
-             style: col.thStyle,
-             class: col.thClass
-           }
-          
+        if (col.children && col.children.length > 0) {
+          const children = buildLevel(col.children, level + 1)
+          if (children.length === 0) return
+
+          const header: ComplexHeader = {
+            field: col.field,
+            title: col.title,
+            colspan: children.reduce((s, c) => s + (c.colspan || 1), 0),
+            rowspan: 1,
+            level,
+            style: col.thStyle,
+            class: col.thClass,
+            children
+          }
+
           levels[level].push(header)
-          
-          // Build children
-          buildLevel(col.children, level + 1, currentPath)
+          headers.push(header)
         } else {
-          // Leaf header
-          const rowspan = maxDepth - level
           const header: ComplexHeader = {
             field: col.field,
             title: col.title,
             colspan: 1,
-            rowspan,
+            rowspan: maxDepth - level,
             level,
             style: col.thStyle,
             class: col.thClass
           }
-          
+
           levels[level].push(header)
+          headers.push(header)
         }
       })
+      return headers
     }
-    
-    buildLevel(cols, 0)
-    
+
+    const tree = buildLevel(cols, 0)
+
     return {
       levels: maxDepth,
-      headers: levels
+      headers: levels,
+      tree
     }
   }
   

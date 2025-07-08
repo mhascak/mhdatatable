@@ -47,10 +47,12 @@
 
     <!-- Main Table -->
     <main class="mh-datatable__content">
-      <Table 
+      <Table
         ref="tableRef"
         :columns="finalColumns"
-        :data="finalData" 
+        :header-columns="columns"
+        :complex-headers="complexHeadersEnabled"
+        :data="finalData"
         :total="total"
         :query="query"
         :loading="loading"
