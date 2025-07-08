@@ -36,31 +36,62 @@
         <!-- Left fixed header -->
         <div class="mh-table-fixed-left" v-if="leftFixedColumns.length > 0" :style="{ width: `${fixedLeftTableWidth}px` }">
           <TableFrame left-fixed :tableColumns="leftFixedColumns" :shouldRenderSelection="props.selectable">
-            <TableHeader :tableColumns="leftFixedColumns" :query="query" leftFixed :shouldRenderSelection="props.selectable" :bodyData="data" @handle-event="handleTableHeaderEvent" @header-resize="handleHeaderResize" @sort="handleSort" @menu-action="handleMenuAction">
+            <component
+              :is="complexHeadersEnabled ? ComplexTableHeader : TableHeader"
+              :columns="headerColumns"
+              :table-columns="leftFixedColumns"
+              :query="query"
+              leftFixed
+              :shouldRenderSelection="props.selectable"
+              :bodyData="data"
+              @handle-event="handleTableHeaderEvent"
+              @header-resize="handleHeaderResize"
+              @sort="handleSort"
+              @menu-action="handleMenuAction"
+            >
               <template v-for="(_, slot) in $slots" #[slot]="scope">
                 <slot :name="slot" v-bind="scope" />
               </template>
-            </TableHeader>
+            </component>
           </TableFrame>
         </div>
         <!-- Main header -->
         <div ref="mainTableHeader" class="mh-table-main" :style="{ 'margin-left': `${fixedLeftTableWidth}px`, 'margin-right': `${fixedRightTableWidth}px` }">
-                      <TableFrame :tableColumns="normalColumns" :shouldRenderSelection="leftFixedColumns.length === 0 ? props.selectable : false">
-            <TableHeader :tableColumns="normalColumns" :query="query" :shouldRenderSelection="leftFixedColumns.length === 0 ? props.selectable : false" @header-resize="handleHeaderResize" @sort="handleSort" @menu-action="handleMenuAction">
+          <TableFrame :tableColumns="normalColumns" :shouldRenderSelection="leftFixedColumns.length === 0 ? props.selectable : false">
+            <component
+              :is="complexHeadersEnabled ? ComplexTableHeader : TableHeader"
+              :columns="headerColumns"
+              :table-columns="normalColumns"
+              :query="query"
+              :shouldRenderSelection="leftFixedColumns.length === 0 ? props.selectable : false"
+              @header-resize="handleHeaderResize"
+              @sort="handleSort"
+              @menu-action="handleMenuAction"
+            >
               <template v-for="(_, slot) in $slots" #[slot]="scope">
                 <slot :name="slot" v-bind="scope" />
               </template>
-            </TableHeader>
+            </component>
           </TableFrame>
         </div>
         <!-- Right fixed header -->
         <div class="mh-table-fixed-right" v-if="rightFixedColumns.length > 0" :style="{ width: `${fixedRightTableWidth}px` }">
           <TableFrame right-fixed :tableColumns="rightFixedColumns" :shouldRenderSelection="false">
-            <TableHeader :tableColumns="rightFixedColumns" :query="query" rightFixed :shouldRenderSelection="false" @header-resize="handleHeaderResize" @sort="handleSort" @menu-action="handleMenuAction">
+            <component
+              :is="complexHeadersEnabled ? ComplexTableHeader : TableHeader"
+              :columns="headerColumns"
+              :table-columns="rightFixedColumns"
+              :query="query"
+              rightFixed
+              :shouldRenderSelection="false"
+              @header-resize="handleHeaderResize"
+              @sort="handleSort"
+              @menu-action="handleMenuAction"
+            >
               <template v-for="(_, slot) in $slots" #[slot]="scope">
                 <slot :name="slot" v-bind="scope" />
               </template>
-            </TableHeader>
+            </component>
           </TableFrame>
         </div>
       </div>
@@ -292,6 +323,7 @@ import { useVirtualScrolling } from '@/composables/useVirtualScrolling'
 import type { TableProps, TableColumn, TableHeightConfig, TableQuery, NestedGridConfig } from '@/types'
 import TableFrame from './TableFrame.vue'
 import TableHeader from './TableHeader.vue'
+import ComplexTableHeader from './ComplexTableHeader.vue'
 import TableBody from './TableBody.vue'
 import GroupedTableBody from './GroupedTableBody.vue'
 import TableFooter from './TableFooter.vue'
@@ -299,7 +331,7 @@ import ColumnMenu from '../ColumnMenu/ColumnMenu.vue'
 import ContextMenu from '../ContextMenu/ContextMenu.vue'
 
 // Props
-const props = defineProps<TableProps & { loading?: boolean; summary?: Record<string, any>; selectable?: boolean; nestedGrid?: NestedGridConfig; groupConfig?: any }>()
+const props = defineProps<TableProps & { loading?: boolean; summary?: Record<string, any>; selectable?: boolean; nestedGrid?: NestedGridConfig; groupConfig?: any; headerColumns?: TableColumn[]; complexHeaders?: boolean }>()
 
 // Emits
 const emit = defineEmits<{
@@ -315,15 +347,18 @@ const emit = defineEmits<{
 }>()
 
 // Composables
-const { 
-  columns, 
-  data, 
-  query, 
+const {
+  columns,
+  data,
+  query,
   visibleColumns,
   leftFixedColumns,
   rightFixedColumns,
-  normalColumns 
+  normalColumns
 } = useTableState(props)
+
+const headerColumns = computed(() => props.headerColumns || props.columns)
+const complexHeadersEnabled = computed(() => props.complexHeaders === true)
 
 // Integrate modular column actions
 const {

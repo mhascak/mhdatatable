@@ -47,10 +47,12 @@
 
     <!-- Main Table -->
     <main class="mh-datatable__content">
-      <Table 
+      <Table
         ref="tableRef"
         :columns="finalColumns"
-        :data="finalData" 
+        :header-columns="columns"
+        :complex-headers="complexHeadersEnabled"
+        :data="finalData"
         :total="total"
         :query="query"
         :loading="loading"
@@ -201,8 +203,7 @@ const {
 
 // Advanced features composables
 const groupConfig = computed(() => props.grouping)
-const nestedConfig = computed(() => props.nestedGrid) 
-const complexHeadersEnabled = computed(() => props.complexHeaders)
+const nestedConfig = computed(() => props.nestedGrid)
 
 // Create a computed data source for grouping that considers nested processing
 const groupingDataSource = computed(() => {
@@ -226,10 +227,13 @@ const {
   toggleNestedRow 
 } = useNestedGrid(data, nestedConfig)
 
-const { 
-  headerStructure, 
-  leafColumns 
+const {
+  headerStructure,
+  leafColumns,
+  hasComplexHeaders
 } = useComplexHeaders(columns)
+
+const complexHeadersEnabled = computed(() => hasComplexHeaders.value)
 
 // Determine final data to display based on enabled features
 const finalData = computed(() => {
